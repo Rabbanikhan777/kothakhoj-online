@@ -13,7 +13,7 @@ import { toast } from "sonner";
 const searchSchema = z.object({ mode: z.enum(["signin", "signup"]).optional() });
 
 export const Route = createFileRoute("/auth")({
-  head: () => ({ meta: [{ title: "Sign in — KothaKhoj.com" }] }),
+  head: () => ({ meta: [{ title: "Sign in — KothaKhali.com" }] }),
   validateSearch: searchSchema,
   component: AuthPage,
 });
@@ -75,7 +75,7 @@ function AuthPage() {
           <span className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-hero text-primary-foreground shadow-soft">
             <Home className="h-6 w-6" />
           </span>
-          <h1 className="mt-3 font-display text-2xl font-bold">Welcome to KothaKhoj</h1>
+          <h1 className="mt-3 font-display text-2xl font-bold">Welcome to KothaKhali</h1>
           <p className="text-sm text-muted-foreground">Sign in or create your account to continue</p>
         </div>
 

@@ -13,7 +13,7 @@ const searchSchema = z.object({
 });
 
 export const Route = createFileRoute("/buy")({
-  head: () => ({ meta: [{ title: "Buy Properties in Nepal — KothaKhoj.com" }, { name: "description", content: "Browse homes, apartments, land and villas for sale across Nepal." }] }),
+  head: () => ({ meta: [{ title: "Buy Properties in Nepal — KothaKhali.com" }, { name: "description", content: "Browse homes, apartments, land and villas for sale across Nepal." }] }),
   validateSearch: searchSchema,
   component: BuyPage,
 });
