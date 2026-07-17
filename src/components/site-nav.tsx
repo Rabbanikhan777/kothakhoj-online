@@ -25,7 +25,7 @@ export function SiteNav() {
             <Home className="h-5 w-5" />
           </span>
           <span>
-            KothaKhali<span className="text-brand-navy">.com</span>
+            Kothakhali<span className="text-brand-navy">.com</span>
           </span>
         </Link>
 

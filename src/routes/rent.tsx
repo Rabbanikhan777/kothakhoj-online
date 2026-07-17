@@ -10,7 +10,7 @@ const searchSchema = z.object({
 });
 
 export const Route = createFileRoute("/rent")({
-  head: () => ({ meta: [{ title: "Rent Properties in Nepal — KothaKhali.com" }, { name: "description", content: "Rent apartments, rooms and homes across Nepal." }] }),
+  head: () => ({ meta: [{ title: "Rent Properties in Nepal — Kothakhali.com" }, { name: "description", content: "Rent apartments, rooms and homes across Nepal." }] }),
   validateSearch: searchSchema,
   component: RentPage,
 });

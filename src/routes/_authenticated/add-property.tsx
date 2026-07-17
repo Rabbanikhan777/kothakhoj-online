@@ -10,7 +10,7 @@ import { NEPAL_CITIES, NEPAL_DISTRICTS, PROPERTY_TYPES } from "@/lib/format";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/add-property")({
-  head: () => ({ meta: [{ title: "Add Property — KothaKhali.com" }] }),
+  head: () => ({ meta: [{ title: "Add Property — Kothakhali.com" }] }),
   component: AddProperty,
 });
 
