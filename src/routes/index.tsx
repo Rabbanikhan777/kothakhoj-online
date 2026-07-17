@@ -39,7 +39,7 @@ function HomePage() {
               Find your next <span className="text-primary-foreground/90 underline decoration-primary-foreground/40">home in Nepal</span>
             </h1>
             <p className="mt-4 max-w-2xl text-lg text-primary-foreground/80">
-              Kothakhali.com is Nepal's modern property marketplace. Search verified listings, connect directly with owners, and move in with confidence.
+              KothaKhoj.com is Nepal's modern property marketplace. Search verified listings, connect directly with owners, and move in with confidence.
             </p>
           </div>
           <div className="mt-8">
@@ -98,7 +98,7 @@ function HomePage() {
       {/* Why us */}
       <section className="bg-accent/40">
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
-          <h2 className="text-center font-display text-3xl font-bold">Why Kothakhali?</h2>
+          <h2 className="text-center font-display text-3xl font-bold">Why KothaKhoj?</h2>
           <div className="mt-10 grid gap-6 md:grid-cols-3">
             {[
               { icon: Shield, t: "Verified listings", d: "Every listing is reviewed for accuracy before it goes live." },
@@ -124,7 +124,7 @@ function HomePage() {
             <div>
               <h2 className="font-display text-3xl font-bold">Ready to list your property?</h2>
               <p className="mt-2 max-w-xl text-primary-foreground/80">
-                Reach thousands of buyers and renters across Nepal. It's free to list on Kothakhali.
+                Reach thousands of buyers and renters across Nepal. It's free to list on KothaKhoj.
               </p>
             </div>
             <Button asChild size="lg" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90">

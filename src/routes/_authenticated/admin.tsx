@@ -8,7 +8,7 @@ import { Trash2, Star } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/admin")({
-  head: () => ({ meta: [{ title: "Admin — Kothakhali.com" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "Admin — KothaKhoj.com" }, { name: "robots", content: "noindex" }] }),
   beforeLoad: async ({ context }) => {
     const { data } = await supabase.from("user_roles").select("role").eq("user_id", (context as any).user.id).eq("role", "admin");
     if (!data || data.length === 0) throw redirect({ to: "/dashboard" });
@@ -53,7 +53,7 @@ function AdminPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
       <h1 className="font-display text-3xl font-bold">Admin dashboard</h1>
-      <p className="text-muted-foreground">Manage all listings and users on Kothakhali.</p>
+      <p className="text-muted-foreground">Manage all listings and users on KothaKhoj.</p>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-3">
         <Stat label="Total listings" value={properties.length} />
