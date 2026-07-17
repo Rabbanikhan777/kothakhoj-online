@@ -10,7 +10,7 @@ export function SiteFooter() {
             <span className="grid h-9 w-9 place-items-center rounded-lg bg-primary-foreground text-brand-navy">
               <Home className="h-5 w-5" />
             </span>
-            Kothakhali.com
+            KothaKhoj.com
           </div>
           <p className="mt-3 text-sm text-primary-foreground/70">
             Nepal's modern property marketplace. Buy, rent, and sell homes across the country.
@@ -35,11 +35,11 @@ export function SiteFooter() {
           <h4 className="mb-3 text-sm font-semibold">Get in touch</h4>
           <p className="text-sm text-primary-foreground/80">Putalisadak, Kathmandu</p>
           <p className="text-sm text-primary-foreground/80">+977-1-4000000</p>
-          <p className="text-sm text-primary-foreground/80">hello@kothakhali.com</p>
+          <p className="text-sm text-primary-foreground/80">hello@kothakhoj.com</p>
         </div>
       </div>
       <div className="border-t border-primary-foreground/10 py-4 text-center text-xs text-primary-foreground/60">
-        © {new Date().getFullYear()} Kothakhali.com — All rights reserved.
+        © {new Date().getFullYear()} KothaKhoj.com — All rights reserved.
       </div>
     </footer>
   );
