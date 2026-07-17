@@ -77,8 +77,8 @@ function HomePage() {
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
         <div className="mb-8 flex items-end justify-between">
           <div>
-            <h2 className="font-display text-3xl font-bold">Featured properties</h2>
-            <p className="mt-1 text-muted-foreground">Handpicked homes across Nepal</p>
+            <h2 className="font-display text-3xl font-bold">Latest properties</h2>
+            <p className="mt-1 text-muted-foreground">All active listings across Nepal</p>
           </div>
           <Link to="/buy" className="hidden text-sm font-medium text-primary hover:underline sm:inline-flex">
             View all <ArrowRight className="ml-1 h-4 w-4" />
