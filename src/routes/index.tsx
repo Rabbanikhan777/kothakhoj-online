@@ -11,15 +11,15 @@ export const Route = createFileRoute("/")({
 });
 
 function HomePage() {
-  const { data: featured = [] } = useQuery({
-    queryKey: ["properties", "featured"],
+  const { data: properties = [] } = useQuery({
+    queryKey: ["properties", "all-active"],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("properties")
         .select("id,title,city,district,price,listing_type,property_type,bedrooms,bathrooms,area_sqft,image_url,featured")
-        .eq("featured", true)
         .eq("status", "active")
-        .limit(6);
+        .order("featured", { ascending: false })
+        .order("created_at", { ascending: false });
       if (error) throw error;
       return (data ?? []) as Property[];
     },
