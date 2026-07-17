@@ -1,0 +1,1 @@
+DELETE FROM public.properties WHERE owner_id IS NULL;
