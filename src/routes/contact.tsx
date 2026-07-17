@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/contact")({
-  head: () => ({ meta: [{ title: "Contact — KothaKhali.com" }, { name: "description", content: "Get in touch with the KothaKhali team." }] }),
+  head: () => ({ meta: [{ title: "Contact — Kothakhali.com" }, { name: "description", content: "Get in touch with the Kothakhali team." }] }),
   component: ContactPage,
 });
 
@@ -31,7 +31,7 @@ function ContactPage() {
         <div className="space-y-6">
           <ContactItem icon={MapPin} title="Office" text="Putalisadak, Kathmandu, Nepal" />
           <ContactItem icon={Phone} title="Phone" text="+977-1-4000000" />
-          <ContactItem icon={Mail} title="Email" text="hello@kothakhoj.com" />
+          <ContactItem icon={Mail} title="Email" text="your-email@example.com" />
           <div className="rounded-2xl bg-gradient-card p-6 shadow-soft">
             <h3 className="font-display text-lg font-semibold">Business hours</h3>
             <p className="mt-2 text-sm text-muted-foreground">Sunday – Friday, 9 AM – 6 PM (NPT)</p>
