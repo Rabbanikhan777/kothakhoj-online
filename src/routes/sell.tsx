@@ -3,7 +3,7 @@ import { CheckCircle2, Camera, Users, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/sell")({
-  head: () => ({ meta: [{ title: "Sell Your Property — KothaKhoj.com" }, { name: "description", content: "List your property on Nepal's leading real estate marketplace." }] }),
+  head: () => ({ meta: [{ title: "Sell Your Property — KothaKhali.com" }, { name: "description", content: "List your property on Nepal's leading real estate marketplace." }] }),
   component: SellPage,
 });
 
@@ -13,7 +13,7 @@ function SellPage() {
       <section className="bg-gradient-hero py-16 text-primary-foreground">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <h1 className="max-w-3xl font-display text-4xl font-bold sm:text-5xl">
-            Sell your property faster on KothaKhoj
+            Sell your property faster on KothaKhali
           </h1>
           <p className="mt-3 max-w-2xl text-lg text-primary-foreground/85">
             Reach thousands of serious buyers and renters across Nepal. It's free to list.

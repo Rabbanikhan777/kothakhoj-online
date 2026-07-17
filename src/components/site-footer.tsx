@@ -10,7 +10,7 @@ export function SiteFooter() {
             <span className="grid h-9 w-9 place-items-center rounded-lg bg-primary-foreground text-brand-navy">
               <Home className="h-5 w-5" />
             </span>
-            KothaKhoj.com
+            KothaKhali.com
           </div>
           <p className="mt-3 text-sm text-primary-foreground/70">
             Nepal's modern property marketplace. Buy, rent, and sell homes across the country.
@@ -39,7 +39,7 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="border-t border-primary-foreground/10 py-4 text-center text-xs text-primary-foreground/60">
-        © {new Date().getFullYear()} KothaKhoj.com — All rights reserved.
+        © {new Date().getFullYear()} KothaKhali.com — All rights reserved.
       </div>
     </footer>
   );
