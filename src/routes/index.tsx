@@ -11,15 +11,15 @@ export const Route = createFileRoute("/")({
 });
 
 function HomePage() {
-  const { data: featured = [] } = useQuery({
-    queryKey: ["properties", "featured"],
+  const { data: properties = [] } = useQuery({
+    queryKey: ["properties", "all-active"],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("properties")
         .select("id,title,city,district,price,listing_type,property_type,bedrooms,bathrooms,area_sqft,image_url,featured")
-        .eq("featured", true)
         .eq("status", "active")
-        .limit(6);
+        .order("featured", { ascending: false })
+        .order("created_at", { ascending: false });
       if (error) throw error;
       return (data ?? []) as Property[];
     },
@@ -77,15 +77,15 @@ function HomePage() {
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
         <div className="mb-8 flex items-end justify-between">
           <div>
-            <h2 className="font-display text-3xl font-bold">Featured properties</h2>
-            <p className="mt-1 text-muted-foreground">Handpicked homes across Nepal</p>
+            <h2 className="font-display text-3xl font-bold">Latest properties</h2>
+            <p className="mt-1 text-muted-foreground">All active listings across Nepal</p>
           </div>
           <Link to="/buy" className="hidden text-sm font-medium text-primary hover:underline sm:inline-flex">
             View all <ArrowRight className="ml-1 h-4 w-4" />
           </Link>
         </div>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {featured.map((p) => <PropertyCard key={p.id} p={p} />)}
+          {properties.map((p) => <PropertyCard key={p.id} p={p} />)}
         </div>
       </section>
 
