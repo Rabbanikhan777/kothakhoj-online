@@ -8,7 +8,7 @@ import { Plus, Trash2, Home, Shield } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
-  head: () => ({ meta: [{ title: "My Dashboard — Kothakhali.com" }] }),
+  head: () => ({ meta: [{ title: "My Dashboard — KothaKhoj.com" }] }),
   component: Dashboard,
 });
 

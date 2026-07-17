@@ -63,10 +63,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Kothakhali.com — Buy, Rent & Sell Property in Nepal" },
+      { title: "KothaKhoj.com — Buy, Rent & Sell Property in Nepal" },
       { name: "description", content: "Nepal's modern real estate marketplace. Discover homes, apartments, land, and commercial property in Kathmandu, Pokhara, Lalitpur and beyond." },
-      { name: "author", content: "Kothakhali" },
-      { property: "og:title", content: "Kothakhali.com — Nepal Real Estate" },
+      { name: "author", content: "KothaKhoj" },
+      { property: "og:title", content: "KothaKhoj.com — Nepal Real Estate" },
       { property: "og:description", content: "Buy, rent, and sell property across Nepal." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
