@@ -84,9 +84,15 @@ function HomePage() {
             View all <ArrowRight className="ml-1 h-4 w-4" />
           </Link>
         </div>
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {properties.map((p) => <PropertyCard key={p.id} p={p} />)}
-        </div>
+        {properties.length === 0 ? (
+          <div className="rounded-2xl border border-dashed border-border p-12 text-center text-muted-foreground">
+            No properties available
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {properties.map((p) => <PropertyCard key={p.id} p={p} />)}
+          </div>
+        )}
       </section>
 
       {/* Why us */}
