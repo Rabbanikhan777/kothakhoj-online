@@ -17,9 +17,18 @@ function PropertyDetail() {
   const { data: property, isLoading, error } = useQuery({
     queryKey: ["property", id],
     queryFn: async () => {
-      const { data, error } = await supabase.from("properties").select("*").eq("id", id).maybeSingle();
+      const { data, error } = await supabase.from("properties_public").select("*").eq("id", id).maybeSingle();
       if (error) throw error;
       if (!data) throw notFound();
+      return data;
+    },
+  });
+
+  const { data: contact } = useQuery({
+    queryKey: ["property-contact", id, user?.id],
+    enabled: !!user && !!property,
+    queryFn: async () => {
+      const { data } = await supabase.from("properties").select("contact_name,contact_phone").eq("id", id).maybeSingle();
       return data;
     },
   });
@@ -33,6 +42,8 @@ function PropertyDetail() {
     },
   });
   const canEdit = !!user && !!property && (property.owner_id === user.id || roles.some((r) => r.role === "admin"));
+  const contactName = contact?.contact_name ?? null;
+  const contactPhone = contact?.contact_phone ?? null;
 
   if (isLoading) return <div className="mx-auto max-w-7xl px-4 py-20 text-center text-muted-foreground">Loading…</div>;
   if (error || !property) return <div className="mx-auto max-w-7xl px-4 py-20 text-center">Property not found.</div>;
