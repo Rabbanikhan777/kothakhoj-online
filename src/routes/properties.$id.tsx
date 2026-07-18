@@ -1,8 +1,9 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/use-auth";
 import { formatNPR } from "@/lib/format";
-import { Bed, Bath, MapPin, Maximize2, Phone, User, ArrowLeft, Building2 } from "lucide-react";
+import { Bed, Bath, MapPin, Maximize2, Phone, User, ArrowLeft, Building2, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
