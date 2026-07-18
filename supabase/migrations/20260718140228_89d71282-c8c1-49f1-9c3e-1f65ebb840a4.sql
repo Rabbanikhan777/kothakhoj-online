@@ -1,0 +1,1 @@
+ALTER VIEW public.properties_public SET (security_invoker = true);
