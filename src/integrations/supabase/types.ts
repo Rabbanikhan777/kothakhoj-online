@@ -142,7 +142,75 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      properties_public: {
+        Row: {
+          address: string | null
+          amenities: Json | null
+          area_sqft: number | null
+          bathrooms: number | null
+          bedrooms: number | null
+          city: string | null
+          created_at: string | null
+          description: string | null
+          district: string | null
+          featured: boolean | null
+          id: string | null
+          image_url: string | null
+          images: Json | null
+          listing_type: Database["public"]["Enums"]["listing_type"] | null
+          owner_id: string | null
+          price: number | null
+          property_type: Database["public"]["Enums"]["property_type"] | null
+          status: Database["public"]["Enums"]["property_status"] | null
+          title: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          address?: string | null
+          amenities?: Json | null
+          area_sqft?: number | null
+          bathrooms?: number | null
+          bedrooms?: number | null
+          city?: string | null
+          created_at?: string | null
+          description?: string | null
+          district?: string | null
+          featured?: boolean | null
+          id?: string | null
+          image_url?: string | null
+          images?: Json | null
+          listing_type?: Database["public"]["Enums"]["listing_type"] | null
+          owner_id?: string | null
+          price?: number | null
+          property_type?: Database["public"]["Enums"]["property_type"] | null
+          status?: Database["public"]["Enums"]["property_status"] | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          address?: string | null
+          amenities?: Json | null
+          area_sqft?: number | null
+          bathrooms?: number | null
+          bedrooms?: number | null
+          city?: string | null
+          created_at?: string | null
+          description?: string | null
+          district?: string | null
+          featured?: boolean | null
+          id?: string | null
+          image_url?: string | null
+          images?: Json | null
+          listing_type?: Database["public"]["Enums"]["listing_type"] | null
+          owner_id?: string | null
+          price?: number | null
+          property_type?: Database["public"]["Enums"]["property_type"] | null
+          status?: Database["public"]["Enums"]["property_status"] | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       has_role: {
