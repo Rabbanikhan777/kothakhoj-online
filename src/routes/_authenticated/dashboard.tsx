@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { formatNPR } from "@/lib/format";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Trash2, Home, Shield } from "lucide-react";
+import { Plus, Trash2, Home, Shield, Pencil } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -108,6 +108,11 @@ function Dashboard() {
                   <td className="p-3">{formatNPR(l.price)}</td>
                   <td className="p-3"><Badge variant="outline" className="capitalize">{l.status}</Badge></td>
                   <td className="p-3 text-right">
+                    <Button asChild size="sm" variant="ghost">
+                      <Link to="/edit-property/$id" params={{ id: l.id }}>
+                        <Pencil className="h-4 w-4" />
+                      </Link>
+                    </Button>
                     <Button size="sm" variant="ghost" onClick={() => remove(l.id)}>
                       <Trash2 className="h-4 w-4 text-destructive" />
                     </Button>

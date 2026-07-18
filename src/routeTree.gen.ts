@@ -20,6 +20,7 @@ import { Route as PropertiesIdRouteImport } from './routes/properties.$id'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAddPropertyRouteImport } from './routes/_authenticated/add-property'
+import { Route as AuthenticatedEditPropertyIdRouteImport } from './routes/_authenticated/edit-property.$id'
 
 const SellRoute = SellRouteImport.update({
   id: '/sell',
@@ -76,6 +77,12 @@ const AuthenticatedAddPropertyRoute =
     path: '/add-property',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedEditPropertyIdRoute =
+  AuthenticatedEditPropertyIdRouteImport.update({
+    id: '/edit-property/$id',
+    path: '/edit-property/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -88,6 +95,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/properties/$id': typeof PropertiesIdRoute
+  '/edit-property/$id': typeof AuthenticatedEditPropertyIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -100,6 +108,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/properties/$id': typeof PropertiesIdRoute
+  '/edit-property/$id': typeof AuthenticatedEditPropertyIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -114,6 +123,7 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/properties/$id': typeof PropertiesIdRoute
+  '/_authenticated/edit-property/$id': typeof AuthenticatedEditPropertyIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/dashboard'
     | '/properties/$id'
+    | '/edit-property/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/dashboard'
     | '/properties/$id'
+    | '/edit-property/$id'
   id:
     | '__root__'
     | '/'
@@ -153,6 +165,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/_authenticated/dashboard'
     | '/properties/$id'
+    | '/_authenticated/edit-property/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -245,6 +258,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAddPropertyRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/edit-property/$id': {
+      id: '/_authenticated/edit-property/$id'
+      path: '/edit-property/$id'
+      fullPath: '/edit-property/$id'
+      preLoaderRoute: typeof AuthenticatedEditPropertyIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -252,12 +272,14 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAddPropertyRoute: typeof AuthenticatedAddPropertyRoute
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedEditPropertyIdRoute: typeof AuthenticatedEditPropertyIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAddPropertyRoute: AuthenticatedAddPropertyRoute,
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedEditPropertyIdRoute: AuthenticatedEditPropertyIdRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

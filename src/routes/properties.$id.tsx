@@ -1,8 +1,9 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/use-auth";
 import { formatNPR } from "@/lib/format";
-import { Bed, Bath, MapPin, Maximize2, Phone, User, ArrowLeft, Building2 } from "lucide-react";
+import { Bed, Bath, MapPin, Maximize2, Phone, User, ArrowLeft, Building2, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
@@ -12,6 +13,7 @@ export const Route = createFileRoute("/properties/$id")({
 
 function PropertyDetail() {
   const { id } = Route.useParams();
+  const { user } = useAuth();
   const { data: property, isLoading, error } = useQuery({
     queryKey: ["property", id],
     queryFn: async () => {
@@ -21,6 +23,16 @@ function PropertyDetail() {
       return data;
     },
   });
+
+  const { data: roles = [] } = useQuery({
+    queryKey: ["roles", user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data } = await supabase.from("user_roles").select("role").eq("user_id", user!.id);
+      return data ?? [];
+    },
+  });
+  const canEdit = !!user && !!property && (property.owner_id === user.id || roles.some((r) => r.role === "admin"));
 
   if (isLoading) return <div className="mx-auto max-w-7xl px-4 py-20 text-center text-muted-foreground">Loading…</div>;
   if (error || !property) return <div className="mx-auto max-w-7xl px-4 py-20 text-center">Property not found.</div>;
@@ -45,6 +57,13 @@ function PropertyDetail() {
             <Badge className="bg-primary text-primary-foreground capitalize">For {property.listing_type}</Badge>
             <Badge variant="outline" className="capitalize">{property.property_type}</Badge>
             {property.featured && <Badge className="bg-brand-navy text-primary-foreground">Featured</Badge>}
+            {canEdit && (
+              <Button asChild size="sm" variant="outline" className="ml-auto">
+                <Link to="/edit-property/$id" params={{ id }}>
+                  <Pencil className="mr-1 h-3.5 w-3.5" /> Edit
+                </Link>
+              </Button>
+            )}
           </div>
 
           <h1 className="mt-3 font-display text-3xl font-bold sm:text-4xl">{property.title}</h1>

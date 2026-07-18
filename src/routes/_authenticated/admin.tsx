@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { formatNPR } from "@/lib/format";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Trash2, Star } from "lucide-react";
+import { Trash2, Star, Pencil } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/admin")({
@@ -94,6 +94,11 @@ function AdminPage() {
                     </Button>
                   </td>
                   <td className="p-3">
+                    <Button asChild size="sm" variant="ghost">
+                      <Link to="/edit-property/$id" params={{ id: p.id }}>
+                        <Pencil className="h-4 w-4" />
+                      </Link>
+                    </Button>
                     <Button size="sm" variant="ghost" onClick={() => remove(p.id)}>
                       <Trash2 className="h-4 w-4 text-destructive" />
                     </Button>
