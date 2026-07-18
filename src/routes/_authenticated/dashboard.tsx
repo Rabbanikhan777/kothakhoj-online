@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { formatNPR } from "@/lib/format";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Trash2, Home, Shield } from "lucide-react";
+import { Plus, Trash2, Home, Shield, Pencil } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
