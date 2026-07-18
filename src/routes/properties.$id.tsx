@@ -57,6 +57,13 @@ function PropertyDetail() {
             <Badge className="bg-primary text-primary-foreground capitalize">For {property.listing_type}</Badge>
             <Badge variant="outline" className="capitalize">{property.property_type}</Badge>
             {property.featured && <Badge className="bg-brand-navy text-primary-foreground">Featured</Badge>}
+            {canEdit && (
+              <Button asChild size="sm" variant="outline" className="ml-auto">
+                <Link to="/edit-property/$id" params={{ id }}>
+                  <Pencil className="mr-1 h-3.5 w-3.5" /> Edit
+                </Link>
+              </Button>
+            )}
           </div>
 
           <h1 className="mt-3 font-display text-3xl font-bold sm:text-4xl">{property.title}</h1>
