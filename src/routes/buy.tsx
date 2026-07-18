@@ -28,7 +28,7 @@ export function ListingsPage({ listing, search, title }: { listing: "sale" | "re
     queryKey: ["properties", listing, search],
     queryFn: async () => {
       let q = supabase
-        .from("properties")
+        .from("properties_public")
         .select("id,title,city,district,price,listing_type,property_type,bedrooms,bathrooms,area_sqft,image_url,featured")
         .eq("listing_type", listing)
         .eq("status", "active")

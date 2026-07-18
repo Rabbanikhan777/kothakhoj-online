@@ -17,9 +17,18 @@ function PropertyDetail() {
   const { data: property, isLoading, error } = useQuery({
     queryKey: ["property", id],
     queryFn: async () => {
-      const { data, error } = await supabase.from("properties").select("*").eq("id", id).maybeSingle();
+      const { data, error } = await supabase.from("properties_public").select("*").eq("id", id).maybeSingle();
       if (error) throw error;
       if (!data) throw notFound();
+      return data;
+    },
+  });
+
+  const { data: contact } = useQuery({
+    queryKey: ["property-contact", id, user?.id],
+    enabled: !!user && !!property,
+    queryFn: async () => {
+      const { data } = await supabase.from("properties").select("contact_name,contact_phone").eq("id", id).maybeSingle();
       return data;
     },
   });
@@ -33,6 +42,8 @@ function PropertyDetail() {
     },
   });
   const canEdit = !!user && !!property && (property.owner_id === user.id || roles.some((r) => r.role === "admin"));
+  const contactName = contact?.contact_name ?? null;
+  const contactPhone = contact?.contact_phone ?? null;
 
   if (isLoading) return <div className="mx-auto max-w-7xl px-4 py-20 text-center text-muted-foreground">Loading…</div>;
   if (error || !property) return <div className="mx-auto max-w-7xl px-4 py-20 text-center">Property not found.</div>;
@@ -47,7 +58,7 @@ function PropertyDetail() {
         <div className="lg:col-span-2">
           <div className="overflow-hidden rounded-2xl bg-muted shadow-elegant">
             {property.image_url ? (
-              <img src={property.image_url} alt={property.title} className="aspect-[16/10] w-full object-cover" />
+              <img src={property.image_url} alt={property.title ?? "Property"} className="aspect-[16/10] w-full object-cover" />
             ) : (
               <div className="grid aspect-[16/10] place-items-center text-muted-foreground">No image</div>
             )}
@@ -94,16 +105,24 @@ function PropertyDetail() {
             </div>
             <div className="mt-6 space-y-3 border-t pt-4">
               <div className="flex items-center gap-2 text-sm">
-                <User className="h-4 w-4 text-primary" /> {property.contact_name || "Owner"}
+                <User className="h-4 w-4 text-primary" /> {contactName || "Owner"}
               </div>
-              {property.contact_phone && (
-                <a href={`tel:${property.contact_phone}`} className="flex items-center gap-2 text-sm text-primary hover:underline">
-                  <Phone className="h-4 w-4" /> {property.contact_phone}
+              {contactPhone ? (
+                <a href={`tel:${contactPhone}`} className="flex items-center gap-2 text-sm text-primary hover:underline">
+                  <Phone className="h-4 w-4" /> {contactPhone}
                 </a>
-              )}
+              ) : !user ? (
+                <p className="text-xs text-muted-foreground">
+                  <Link to="/auth" className="text-primary hover:underline">Sign in</Link> to view contact details.
+                </p>
+              ) : null}
             </div>
             <Button className="mt-6 w-full bg-gradient-hero text-primary-foreground" size="lg" asChild>
-              <a href={property.contact_phone ? `tel:${property.contact_phone}` : "/contact"}>Contact Owner</a>
+              {contactPhone ? (
+                <a href={`tel:${contactPhone}`}>Contact Owner</a>
+              ) : (
+                <Link to={user ? "/contact" : "/auth"}>Contact Owner</Link>
+              )}
             </Button>
           </div>
 

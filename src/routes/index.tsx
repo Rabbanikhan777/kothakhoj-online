@@ -15,7 +15,7 @@ function HomePage() {
     queryKey: ["properties", "all-active"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("properties")
+        .from("properties_public")
         .select("id,title,city,district,price,listing_type,property_type,bedrooms,bathrooms,area_sqft,image_url,featured")
         .eq("status", "active")
         .order("featured", { ascending: false })
