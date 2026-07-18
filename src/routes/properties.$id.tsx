@@ -58,7 +58,7 @@ function PropertyDetail() {
         <div className="lg:col-span-2">
           <div className="overflow-hidden rounded-2xl bg-muted shadow-elegant">
             {property.image_url ? (
-              <img src={property.image_url} alt={property.title} className="aspect-[16/10] w-full object-cover" />
+              <img src={property.image_url} alt={property.title ?? "Property"} className="aspect-[16/10] w-full object-cover" />
             ) : (
               <div className="grid aspect-[16/10] place-items-center text-muted-foreground">No image</div>
             )}
