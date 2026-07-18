@@ -105,16 +105,24 @@ function PropertyDetail() {
             </div>
             <div className="mt-6 space-y-3 border-t pt-4">
               <div className="flex items-center gap-2 text-sm">
-                <User className="h-4 w-4 text-primary" /> {property.contact_name || "Owner"}
+                <User className="h-4 w-4 text-primary" /> {contactName || "Owner"}
               </div>
-              {property.contact_phone && (
-                <a href={`tel:${property.contact_phone}`} className="flex items-center gap-2 text-sm text-primary hover:underline">
-                  <Phone className="h-4 w-4" /> {property.contact_phone}
+              {contactPhone ? (
+                <a href={`tel:${contactPhone}`} className="flex items-center gap-2 text-sm text-primary hover:underline">
+                  <Phone className="h-4 w-4" /> {contactPhone}
                 </a>
-              )}
+              ) : !user ? (
+                <p className="text-xs text-muted-foreground">
+                  <Link to="/auth" className="text-primary hover:underline">Sign in</Link> to view contact details.
+                </p>
+              ) : null}
             </div>
             <Button className="mt-6 w-full bg-gradient-hero text-primary-foreground" size="lg" asChild>
-              <a href={property.contact_phone ? `tel:${property.contact_phone}` : "/contact"}>Contact Owner</a>
+              {contactPhone ? (
+                <a href={`tel:${contactPhone}`}>Contact Owner</a>
+              ) : (
+                <Link to={user ? "/contact" : "/auth"}>Contact Owner</Link>
+              )}
             </Button>
           </div>
 
