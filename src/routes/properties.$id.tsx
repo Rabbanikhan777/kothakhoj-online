@@ -13,6 +13,7 @@ export const Route = createFileRoute("/properties/$id")({
 
 function PropertyDetail() {
   const { id } = Route.useParams();
+  const { user } = useAuth();
   const { data: property, isLoading, error } = useQuery({
     queryKey: ["property", id],
     queryFn: async () => {
@@ -22,6 +23,16 @@ function PropertyDetail() {
       return data;
     },
   });
+
+  const { data: roles = [] } = useQuery({
+    queryKey: ["roles", user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data } = await supabase.from("user_roles").select("role").eq("user_id", user!.id);
+      return data ?? [];
+    },
+  });
+  const canEdit = !!user && !!property && (property.owner_id === user.id || roles.some((r) => r.role === "admin"));
 
   if (isLoading) return <div className="mx-auto max-w-7xl px-4 py-20 text-center text-muted-foreground">Loading…</div>;
   if (error || !property) return <div className="mx-auto max-w-7xl px-4 py-20 text-center">Property not found.</div>;
