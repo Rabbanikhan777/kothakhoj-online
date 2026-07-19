@@ -57,6 +57,7 @@ function EditProperty() {
         image_url: property.image_url ?? "",
         contact_name: property.contact_name ?? "",
         contact_phone: property.contact_phone ?? "",
+        status: property.status ?? "active",
       });
     }
   }, [property, form]);
