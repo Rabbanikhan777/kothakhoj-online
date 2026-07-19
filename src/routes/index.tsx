@@ -16,8 +16,8 @@ function HomePage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("properties_public")
-        .select("id,title,city,district,price,listing_type,property_type,bedrooms,bathrooms,area_sqft,image_url,featured")
-        .eq("status", "active")
+        .select("id,title,city,district,price,listing_type,property_type,bedrooms,bathrooms,area_sqft,image_url,featured,status")
+        .in("status", ["active", "rented", "sold", "unavailable"])
         .order("featured", { ascending: false })
         .order("created_at", { ascending: false });
       if (error) throw error;

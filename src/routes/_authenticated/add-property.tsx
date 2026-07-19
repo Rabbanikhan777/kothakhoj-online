@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { NEPAL_CITIES, NEPAL_DISTRICTS, PROPERTY_TYPES } from "@/lib/format";
+import { NEPAL_CITIES, NEPAL_DISTRICTS, PROPERTY_TYPES, STATUS_OPTIONS } from "@/lib/format";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/add-property")({
@@ -33,6 +33,7 @@ function AddProperty() {
     image_url: "",
     contact_name: "",
     contact_phone: "",
+    status: "active",
   });
 
   function set<K extends keyof typeof form>(k: K, v: string) {
@@ -58,7 +59,7 @@ function AddProperty() {
       image_url: form.image_url || null,
       contact_name: form.contact_name || null,
       contact_phone: form.contact_phone || null,
-      status: "active",
+      status: form.status as any,
     }).select("id").single();
     setSaving(false);
     if (error) return toast.error(error.message);
@@ -97,6 +98,16 @@ function AddProperty() {
               </SelectContent>
             </Select>
           </div>
+        </div>
+
+        <div>
+          <Label>Availability status</Label>
+          <Select value={form.status} onValueChange={(v) => set("status", v)}>
+            <SelectTrigger><SelectValue /></SelectTrigger>
+            <SelectContent>
+              {STATUS_OPTIONS.map((s) => <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>)}
+            </SelectContent>
+          </Select>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-3">

@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Bed, Bath, MapPin, Maximize2 } from "lucide-react";
-import { formatNPR } from "@/lib/format";
+import { formatNPR, statusLabel, statusBadgeClass, isAvailable } from "@/lib/format";
 import { Badge } from "@/components/ui/badge";
 
 export interface Property {
@@ -16,9 +16,11 @@ export interface Property {
   area_sqft: number | string | null;
   image_url: string | null;
   featured?: boolean;
+  status?: string | null;
 }
 
 export function PropertyCard({ p }: { p: Property }) {
+  const available = isAvailable(p.status);
   return (
     <Link
       to="/properties/$id"
@@ -31,16 +33,19 @@ export function PropertyCard({ p }: { p: Property }) {
             src={p.image_url}
             alt={p.title}
             loading="lazy"
-            className="h-full w-full object-cover transition group-hover:scale-105"
+            className={`h-full w-full object-cover transition group-hover:scale-105 ${available ? "" : "grayscale"}`}
           />
         ) : (
           <div className="grid h-full w-full place-items-center text-muted-foreground">No image</div>
         )}
-        <div className="absolute left-3 top-3 flex gap-2">
+        <div className="absolute left-3 top-3 flex flex-wrap gap-2">
           <Badge className="bg-primary text-primary-foreground capitalize">
             For {p.listing_type}
           </Badge>
           {p.featured && <Badge className="bg-brand-navy text-primary-foreground">Featured</Badge>}
+        </div>
+        <div className="absolute right-3 top-3">
+          <Badge className={statusBadgeClass(p.status)}>{statusLabel(p.status)}</Badge>
         </div>
       </div>
       <div className="p-4">

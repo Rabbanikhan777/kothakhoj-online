@@ -29,9 +29,9 @@ export function ListingsPage({ listing, search, title }: { listing: "sale" | "re
     queryFn: async () => {
       let q = supabase
         .from("properties_public")
-        .select("id,title,city,district,price,listing_type,property_type,bedrooms,bathrooms,area_sqft,image_url,featured")
+        .select("id,title,city,district,price,listing_type,property_type,bedrooms,bathrooms,area_sqft,image_url,featured,status")
         .eq("listing_type", listing)
-        .eq("status", "active")
+        .in("status", ["active", "rented", "sold", "unavailable"])
         .order("featured", { ascending: false })
         .order("created_at", { ascending: false });
       if (search.city) q = q.eq("city", search.city);

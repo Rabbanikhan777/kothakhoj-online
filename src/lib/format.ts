@@ -27,3 +27,34 @@ export const PROPERTY_TYPES = [
   { value: "commercial", label: "Commercial" },
   { value: "room", label: "Room" },
 ];
+
+export const STATUS_OPTIONS = [
+  { value: "active", label: "Available" },
+  { value: "rented", label: "Rented" },
+  { value: "sold", label: "Sold" },
+  { value: "unavailable", label: "Unavailable" },
+] as const;
+
+export type PropertyStatus = "active" | "pending" | "sold" | "rented" | "unavailable" | "draft";
+
+export function statusLabel(s?: string | null): string {
+  const found = STATUS_OPTIONS.find((o) => o.value === s);
+  if (found) return found.label;
+  if (s === "pending") return "Pending";
+  if (s === "draft") return "Draft";
+  return "Available";
+}
+
+export function isAvailable(s?: string | null): boolean {
+  return s === "active" || s === "pending" || s == null;
+}
+
+export function statusBadgeClass(s?: string | null): string {
+  switch (s) {
+    case "active": return "bg-emerald-600 text-white";
+    case "rented": return "bg-amber-600 text-white";
+    case "sold": return "bg-rose-600 text-white";
+    case "unavailable": return "bg-slate-500 text-white";
+    default: return "bg-slate-500 text-white";
+  }
+}

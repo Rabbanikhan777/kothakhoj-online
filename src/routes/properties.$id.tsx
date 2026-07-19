@@ -2,7 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
-import { formatNPR } from "@/lib/format";
+import { formatNPR, statusLabel, statusBadgeClass, isAvailable } from "@/lib/format";
 import { Bed, Bath, MapPin, Maximize2, Phone, User, ArrowLeft, Building2, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -67,6 +67,7 @@ function PropertyDetail() {
           <div className="mt-6 flex flex-wrap items-center gap-2">
             <Badge className="bg-primary text-primary-foreground capitalize">For {property.listing_type}</Badge>
             <Badge variant="outline" className="capitalize">{property.property_type}</Badge>
+            <Badge className={statusBadgeClass(property.status)}>{statusLabel(property.status)}</Badge>
             {property.featured && <Badge className="bg-brand-navy text-primary-foreground">Featured</Badge>}
             {canEdit && (
               <Button asChild size="sm" variant="outline" className="ml-auto">
@@ -103,27 +104,44 @@ function PropertyDetail() {
               {formatNPR(property.price)}
               {property.listing_type === "rent" && <span className="text-base text-muted-foreground">/month</span>}
             </div>
-            <div className="mt-6 space-y-3 border-t pt-4">
-              <div className="flex items-center gap-2 text-sm">
-                <User className="h-4 w-4 text-primary" /> {contactName || "Owner"}
-              </div>
-              {contactPhone ? (
-                <a href={`tel:${contactPhone}`} className="flex items-center gap-2 text-sm text-primary hover:underline">
-                  <Phone className="h-4 w-4" /> {contactPhone}
-                </a>
-              ) : !user ? (
-                <p className="text-xs text-muted-foreground">
-                  <Link to="/auth" className="text-primary hover:underline">Sign in</Link> to view contact details.
+            {isAvailable(property.status) ? (
+              <>
+                <div className="mt-6 space-y-3 border-t pt-4">
+                  <div className="flex items-center gap-2 text-sm">
+                    <User className="h-4 w-4 text-primary" /> {contactName || "Owner"}
+                  </div>
+                  {contactPhone ? (
+                    <a href={`tel:${contactPhone}`} className="flex items-center gap-2 text-sm text-primary hover:underline">
+                      <Phone className="h-4 w-4" /> {contactPhone}
+                    </a>
+                  ) : !user ? (
+                    <p className="text-xs text-muted-foreground">
+                      <Link to="/auth" className="text-primary hover:underline">Sign in</Link> to view contact details.
+                    </p>
+                  ) : null}
+                </div>
+                <Button className="mt-6 w-full bg-gradient-hero text-primary-foreground" size="lg" asChild>
+                  {contactPhone ? (
+                    <a href={`tel:${contactPhone}`}>Contact Owner</a>
+                  ) : (
+                    <Link to={user ? "/contact" : "/auth"}>Contact Owner</Link>
+                  )}
+                </Button>
+              </>
+            ) : (
+              <div className="mt-6 border-t pt-4">
+                <div className={`rounded-xl p-4 text-center ${statusBadgeClass(property.status)}`}>
+                  <div className="text-sm opacity-90">This property is</div>
+                  <div className="mt-1 font-display text-xl font-bold">{statusLabel(property.status)}</div>
+                </div>
+                <Button className="mt-4 w-full" size="lg" variant="outline" disabled>
+                  Not available for contact
+                </Button>
+                <p className="mt-2 text-center text-xs text-muted-foreground">
+                  Browse other listings that are currently available.
                 </p>
-              ) : null}
-            </div>
-            <Button className="mt-6 w-full bg-gradient-hero text-primary-foreground" size="lg" asChild>
-              {contactPhone ? (
-                <a href={`tel:${contactPhone}`}>Contact Owner</a>
-              ) : (
-                <Link to={user ? "/contact" : "/auth"}>Contact Owner</Link>
-              )}
-            </Button>
+              </div>
+            )}
           </div>
 
           <div className="rounded-2xl border border-border bg-background p-6">

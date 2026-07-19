@@ -224,7 +224,13 @@ export type Database = {
     Enums: {
       app_role: "user" | "agent" | "admin"
       listing_type: "sale" | "rent"
-      property_status: "active" | "pending" | "sold" | "rented" | "draft"
+      property_status:
+        | "active"
+        | "pending"
+        | "sold"
+        | "rented"
+        | "draft"
+        | "unavailable"
       property_type:
         | "house"
         | "apartment"
@@ -361,7 +367,14 @@ export const Constants = {
     Enums: {
       app_role: ["user", "agent", "admin"],
       listing_type: ["sale", "rent"],
-      property_status: ["active", "pending", "sold", "rented", "draft"],
+      property_status: [
+        "active",
+        "pending",
+        "sold",
+        "rented",
+        "draft",
+        "unavailable",
+      ],
       property_type: [
         "house",
         "apartment",
