@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Bed, Bath, MapPin, Maximize2 } from "lucide-react";
-import { formatNPR } from "@/lib/format";
+import { formatNPR, statusLabel, statusBadgeClass, isAvailable } from "@/lib/format";
 import { Badge } from "@/components/ui/badge";
 
 export interface Property {
