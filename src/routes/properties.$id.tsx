@@ -67,6 +67,7 @@ function PropertyDetail() {
           <div className="mt-6 flex flex-wrap items-center gap-2">
             <Badge className="bg-primary text-primary-foreground capitalize">For {property.listing_type}</Badge>
             <Badge variant="outline" className="capitalize">{property.property_type}</Badge>
+            <Badge className={statusBadgeClass(property.status)}>{statusLabel(property.status)}</Badge>
             {property.featured && <Badge className="bg-brand-navy text-primary-foreground">Featured</Badge>}
             {canEdit && (
               <Button asChild size="sm" variant="outline" className="ml-auto">
