@@ -16,6 +16,7 @@ export interface Property {
   area_sqft: number | string | null;
   image_url: string | null;
   featured?: boolean;
+  status?: string | null;
 }
 
 export function PropertyCard({ p }: { p: Property }) {
