@@ -101,6 +101,7 @@ function EditProperty() {
       image_url: form.image_url || null,
       contact_name: form.contact_name || null,
       contact_phone: form.contact_phone || null,
+      status: form.status as any,
     }).eq("id", id);
     setSaving(false);
     if (error) return toast.error(error.message);
