@@ -142,6 +142,17 @@ function EditProperty() {
           </div>
         </div>
 
+        <div>
+          <Label>Availability status</Label>
+          <Select value={form.status} onValueChange={(v) => set("status", v)}>
+            <SelectTrigger><SelectValue /></SelectTrigger>
+            <SelectContent>
+              {STATUS_OPTIONS.map((s) => <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>)}
+            </SelectContent>
+          </Select>
+        </div>
+
+
         <div className="grid gap-4 sm:grid-cols-3">
           <div>
             <Label>{form.listing_type === "rent" ? "Rent (Rs/mo)" : "Price (Rs)"}</Label>
