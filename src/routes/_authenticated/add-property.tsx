@@ -33,6 +33,7 @@ function AddProperty() {
     image_url: "",
     contact_name: "",
     contact_phone: "",
+    status: "active",
   });
 
   function set<K extends keyof typeof form>(k: K, v: string) {
