@@ -59,7 +59,7 @@ function AddProperty() {
       image_url: form.image_url || null,
       contact_name: form.contact_name || null,
       contact_phone: form.contact_phone || null,
-      status: "active",
+      status: form.status as any,
     }).select("id").single();
     setSaving(false);
     if (error) return toast.error(error.message);
