@@ -8,7 +8,13 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/contact")({
-  head: () => ({ meta: [{ title: "Contact — KothaKhoj.com" }, { name: "description", content: "Get in touch with the KothaKhoj team." }] }),
+  head: () => ({ meta: [
+    { title: "Contact KothaKhoj — Support, Partnerships & Feedback" },
+    { name: "description", content: "Reach the KothaKhoj team for help with listings, buyer and renter enquiries, partnership opportunities, or product feedback about Nepal's real estate marketplace." },
+    { property: "og:title", content: "Contact KothaKhoj" },
+    { property: "og:description", content: "Get in touch with the KothaKhoj team for support, partnerships, or feedback." },
+    { property: "og:url", content: "https://nepal-home-hub.lovable.app/contact" },
+  ], links: [{ rel: "canonical", href: "https://nepal-home-hub.lovable.app/contact" }] }),
   component: ContactPage,
 });
 
