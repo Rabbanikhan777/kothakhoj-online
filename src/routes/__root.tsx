@@ -70,6 +70,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: "Buy, rent, and sell property across Nepal." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "google-site-verification", content: "4dLTbKRQCXaCkSm4_js23LBfPIscI4P7IFp5IaQ_foM" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
