@@ -13,13 +13,33 @@ const searchSchema = z.object({
 });
 
 export const Route = createFileRoute("/buy")({
-  head: () => ({ meta: [
-    { title: "Buy Property in Nepal — Houses, Apartments & Land | KothaKhoj.com" },
-    { name: "description", content: "Browse houses, apartments, land and villas for sale in Kathmandu, Pokhara, Lalitpur and cities across Nepal. Compare prices, locations and amenities on KothaKhoj." },
-    { property: "og:title", content: "Buy Property in Nepal — KothaKhoj.com" },
-    { property: "og:description", content: "Discover homes, apartments, land and commercial property for sale across Nepal." },
-    { property: "og:url", content: "https://nepal-home-hub.lovable.app/buy" },
-  ], links: [{ rel: "canonical", href: "https://nepal-home-hub.lovable.app/buy" }] }),
+  head: () => ({
+    meta: [
+      { title: "Buy Property in Nepal — Houses, Apartments & Land | KothaKhoj.com" },
+      { name: "description", content: "Browse houses, apartments, land and villas for sale in Kathmandu, Pokhara, Lalitpur and cities across Nepal. Compare prices, locations and amenities on KothaKhoj." },
+      { property: "og:title", content: "Buy Property in Nepal — KothaKhoj.com" },
+      { property: "og:description", content: "Discover homes, apartments, land and commercial property for sale across Nepal." },
+      { property: "og:url", content: "https://nepal-home-hub.lovable.app/buy" },
+    ],
+    links: [{ rel: "canonical", href: "https://nepal-home-hub.lovable.app/buy" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Properties for Sale in Nepal",
+          description: "Collection of houses, apartments, land and commercial properties for sale across Nepal.",
+          url: "https://nepal-home-hub.lovable.app/buy",
+          mainEntity: {
+            "@type": "ItemList",
+            name: "Properties for Sale",
+            itemListOrder: "https://schema.org/ItemListOrderDescending",
+          },
+        }),
+      },
+    ],
+  }),
   validateSearch: searchSchema,
   component: BuyPage,
 });
