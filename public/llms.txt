@@ -1,0 +1,17 @@
+# KothaKhoj.com
+
+> Nepal's modern real estate marketplace. Buy, rent, and sell homes, apartments, land, and commercial property in Kathmandu, Pokhara, Lalitpur and beyond.
+
+KothaKhoj.com connects property owners directly with buyers and renters across Nepal. Listings are verified and cover every major city and district.
+
+## Pages
+
+- [Home](/): Featured and latest property listings across Nepal.
+- [Buy Properties](/buy): Houses, apartments, land and villas for sale, filterable by city, district, price and property type.
+- [Rent Properties](/rent): Apartments, rooms and family homes for rent across Nepal.
+- [Sell Your Property](/sell): List a property for sale or rent on KothaKhoj.
+- [Contact](/contact): Get in touch with the KothaKhoj team.
+
+## Optional
+
+- [Sitemap](/sitemap.xml): Full list of indexable pages including individual property listings.

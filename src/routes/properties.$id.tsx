@@ -11,12 +11,13 @@ export const Route = createFileRoute("/properties/$id")({
   loader: async ({ params }) => {
     const { data } = await supabase
       .from("properties_public")
-      .select("title,city,district,listing_type,property_type,price")
+      .select("title,description,city,district,listing_type,property_type,price,image_url")
       .eq("id", params.id)
       .maybeSingle();
     return { seo: data };
   },
   head: ({ params, loaderData }) => {
+    const url = `https://nepal-home-hub.lovable.app/properties/${params.id}`;
     const p = loaderData?.seo;
     if (!p) {
       return {
@@ -25,22 +26,49 @@ export const Route = createFileRoute("/properties/$id")({
           { name: "description", content: "View property details, photos, price, and contact information on KothaKhoj — Nepal's real estate marketplace." },
           { name: "robots", content: "noindex" },
         ],
-        links: [{ rel: "canonical", href: `https://nepal-home-hub.lovable.app/properties/${params.id}` }],
+        links: [{ rel: "canonical", href: url }],
       };
     }
     const action = p.listing_type === "rent" ? "for Rent" : "for Sale";
     const title = `${p.title} — ${p.city}, ${p.district} ${action} | KothaKhoj.com`;
     const desc = `${p.property_type} ${action.toLowerCase()} in ${p.city}, ${p.district}, Nepal. Priced at NPR ${Number(p.price).toLocaleString("en-IN")}. View photos, details, and contact the owner on KothaKhoj.`;
+    const meta: Array<Record<string, string>> = [
+      { title },
+      { name: "description", content: desc },
+      { property: "og:title", content: title },
+      { property: "og:description", content: desc },
+      { property: "og:type", content: "article" },
+      { property: "og:url", content: url },
+    ];
+    if (p.image_url) {
+      meta.push({ property: "og:image", content: p.image_url });
+      meta.push({ name: "twitter:image", content: p.image_url });
+    }
     return {
-      meta: [
-        { title },
-        { name: "description", content: desc },
-        { property: "og:title", content: title },
-        { property: "og:description", content: desc },
-        { property: "og:type", content: "article" },
-        { property: "og:url", content: `https://nepal-home-hub.lovable.app/properties/${params.id}` },
+      meta,
+      links: [{ rel: "canonical", href: url }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            name: p.title,
+            description: p.description ?? desc,
+            image: p.image_url ? [p.image_url] : undefined,
+            category: `Real Estate — ${p.property_type} ${action}`,
+            url,
+            offers: {
+              "@type": "Offer",
+              price: Number(p.price),
+              priceCurrency: "NPR",
+              availability: "https://schema.org/InStock",
+              url,
+            },
+            areaServed: { "@type": "Place", name: `${p.city}, ${p.district}, Nepal` },
+          }),
+        },
       ],
-      links: [{ rel: "canonical", href: `https://nepal-home-hub.lovable.app/properties/${params.id}` }],
     };
   },
   component: PropertyDetail,
