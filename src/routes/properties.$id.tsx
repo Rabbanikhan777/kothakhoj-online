@@ -8,6 +8,41 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
 export const Route = createFileRoute("/properties/$id")({
+  loader: async ({ params }) => {
+    const { data } = await supabase
+      .from("properties_public")
+      .select("title,city,district,listing_type,property_type,price")
+      .eq("id", params.id)
+      .maybeSingle();
+    return { seo: data };
+  },
+  head: ({ params, loaderData }) => {
+    const p = loaderData?.seo;
+    if (!p) {
+      return {
+        meta: [
+          { title: "Property — KothaKhoj.com" },
+          { name: "description", content: "View property details, photos, price, and contact information on KothaKhoj — Nepal's real estate marketplace." },
+          { name: "robots", content: "noindex" },
+        ],
+        links: [{ rel: "canonical", href: `https://nepal-home-hub.lovable.app/properties/${params.id}` }],
+      };
+    }
+    const action = p.listing_type === "rent" ? "for Rent" : "for Sale";
+    const title = `${p.title} — ${p.city}, ${p.district} ${action} | KothaKhoj.com`;
+    const desc = `${p.property_type} ${action.toLowerCase()} in ${p.city}, ${p.district}, Nepal. Priced at NPR ${Number(p.price).toLocaleString("en-IN")}. View photos, details, and contact the owner on KothaKhoj.`;
+    return {
+      meta: [
+        { title },
+        { name: "description", content: desc },
+        { property: "og:title", content: title },
+        { property: "og:description", content: desc },
+        { property: "og:type", content: "article" },
+        { property: "og:url", content: `https://nepal-home-hub.lovable.app/properties/${params.id}` },
+      ],
+      links: [{ rel: "canonical", href: `https://nepal-home-hub.lovable.app/properties/${params.id}` }],
+    };
+  },
   component: PropertyDetail,
 });
 

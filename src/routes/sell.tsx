@@ -3,7 +3,13 @@ import { CheckCircle2, Camera, Users, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/sell")({
-  head: () => ({ meta: [{ title: "Sell Your Property — KothaKhoj.com" }, { name: "description", content: "List your property on Nepal's leading real estate marketplace." }] }),
+  head: () => ({ meta: [
+    { title: "Sell or List Your Property in Nepal — KothaKhoj.com" },
+    { name: "description", content: "List your house, apartment, land or commercial property free on KothaKhoj and reach thousands of verified buyers and renters across Nepal in minutes." },
+    { property: "og:title", content: "Sell Your Property on KothaKhoj" },
+    { property: "og:description", content: "Free listings that reach thousands of serious buyers and renters across Nepal." },
+    { property: "og:url", content: "https://nepal-home-hub.lovable.app/sell" },
+  ], links: [{ rel: "canonical", href: "https://nepal-home-hub.lovable.app/sell" }] }),
   component: SellPage,
 });
 

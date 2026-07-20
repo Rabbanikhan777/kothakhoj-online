@@ -13,7 +13,11 @@ import { toast } from "sonner";
 const searchSchema = z.object({ mode: z.enum(["signin", "signup"]).optional() });
 
 export const Route = createFileRoute("/auth")({
-  head: () => ({ meta: [{ title: "Sign in — KothaKhoj.com" }] }),
+  head: () => ({ meta: [
+    { title: "Sign In or Create an Account — KothaKhoj.com" },
+    { name: "description", content: "Sign in or create a free KothaKhoj account to list properties, save favourite homes, and contact owners across Nepal's real estate marketplace." },
+    { name: "robots", content: "noindex" },
+  ] }),
   validateSearch: searchSchema,
   component: AuthPage,
 });
