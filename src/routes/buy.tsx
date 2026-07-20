@@ -13,7 +13,13 @@ const searchSchema = z.object({
 });
 
 export const Route = createFileRoute("/buy")({
-  head: () => ({ meta: [{ title: "Buy Properties in Nepal — KothaKhoj.com" }, { name: "description", content: "Browse homes, apartments, land and villas for sale across Nepal." }] }),
+  head: () => ({ meta: [
+    { title: "Buy Property in Nepal — Houses, Apartments & Land | KothaKhoj.com" },
+    { name: "description", content: "Browse houses, apartments, land and villas for sale in Kathmandu, Pokhara, Lalitpur and cities across Nepal. Compare prices, locations and amenities on KothaKhoj." },
+    { property: "og:title", content: "Buy Property in Nepal — KothaKhoj.com" },
+    { property: "og:description", content: "Discover homes, apartments, land and commercial property for sale across Nepal." },
+    { property: "og:url", content: "https://nepal-home-hub.lovable.app/buy" },
+  ], links: [{ rel: "canonical", href: "https://nepal-home-hub.lovable.app/buy" }] }),
   validateSearch: searchSchema,
   component: BuyPage,
 });
