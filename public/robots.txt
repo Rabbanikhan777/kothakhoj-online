@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nepal-home-hub.lovable.app/sitemap.xml
