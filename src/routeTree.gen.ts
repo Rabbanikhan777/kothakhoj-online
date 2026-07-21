@@ -18,6 +18,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PropertiesIdRouteImport } from './routes/properties.$id'
+import { Route as AuthenticatedFavoritesRouteImport } from './routes/_authenticated/favorites'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAddPropertyRouteImport } from './routes/_authenticated/add-property'
@@ -67,6 +68,11 @@ const PropertiesIdRoute = PropertiesIdRouteImport.update({
   path: '/properties/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedFavoritesRoute = AuthenticatedFavoritesRouteImport.update({
+  id: '/favorites',
+  path: '/favorites',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -101,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/add-property': typeof AuthenticatedAddPropertyRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/favorites': typeof AuthenticatedFavoritesRoute
   '/properties/$id': typeof PropertiesIdRoute
   '/edit-property/$id': typeof AuthenticatedEditPropertyIdRoute
 }
@@ -115,6 +122,7 @@ export interface FileRoutesByTo {
   '/add-property': typeof AuthenticatedAddPropertyRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/favorites': typeof AuthenticatedFavoritesRoute
   '/properties/$id': typeof PropertiesIdRoute
   '/edit-property/$id': typeof AuthenticatedEditPropertyIdRoute
 }
@@ -131,6 +139,7 @@ export interface FileRoutesById {
   '/_authenticated/add-property': typeof AuthenticatedAddPropertyRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/favorites': typeof AuthenticatedFavoritesRoute
   '/properties/$id': typeof PropertiesIdRoute
   '/_authenticated/edit-property/$id': typeof AuthenticatedEditPropertyIdRoute
 }
@@ -147,6 +156,7 @@ export interface FileRouteTypes {
     | '/add-property'
     | '/admin'
     | '/dashboard'
+    | '/favorites'
     | '/properties/$id'
     | '/edit-property/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -161,6 +171,7 @@ export interface FileRouteTypes {
     | '/add-property'
     | '/admin'
     | '/dashboard'
+    | '/favorites'
     | '/properties/$id'
     | '/edit-property/$id'
   id:
@@ -176,6 +187,7 @@ export interface FileRouteTypes {
     | '/_authenticated/add-property'
     | '/_authenticated/admin'
     | '/_authenticated/dashboard'
+    | '/_authenticated/favorites'
     | '/properties/$id'
     | '/_authenticated/edit-property/$id'
   fileRoutesById: FileRoutesById
@@ -257,6 +269,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PropertiesIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/favorites': {
+      id: '/_authenticated/favorites'
+      path: '/favorites'
+      fullPath: '/favorites'
+      preLoaderRoute: typeof AuthenticatedFavoritesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -292,6 +311,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAddPropertyRoute: typeof AuthenticatedAddPropertyRoute
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedFavoritesRoute: typeof AuthenticatedFavoritesRoute
   AuthenticatedEditPropertyIdRoute: typeof AuthenticatedEditPropertyIdRoute
 }
 
@@ -299,6 +319,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAddPropertyRoute: AuthenticatedAddPropertyRoute,
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedFavoritesRoute: AuthenticatedFavoritesRoute,
   AuthenticatedEditPropertyIdRoute: AuthenticatedEditPropertyIdRoute,
 }
 
