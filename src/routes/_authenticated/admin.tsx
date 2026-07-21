@@ -1,10 +1,16 @@
 import { createFileRoute, redirect, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { formatNPR } from "@/lib/format";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Trash2, Star, Pencil } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Trash2, Star, Pencil, Send } from "lucide-react";
+import { sendPushNotification } from "@/lib/notifications.functions";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/admin")({
@@ -60,6 +66,8 @@ function AdminPage() {
         <Stat label="Active" value={properties.filter((p) => p.status === "active").length} />
         <Stat label="Registered users" value={profiles.length} />
       </div>
+
+      <BroadcastPanel />
 
       <h2 className="mt-10 font-display text-xl font-semibold">All properties</h2>
       {isLoading ? (
@@ -141,5 +149,51 @@ function Stat({ label, value }: { label: string; value: number }) {
       <div className="text-sm text-muted-foreground">{label}</div>
       <div className="mt-1 font-display text-3xl font-bold text-primary">{value}</div>
     </div>
+  );
+}
+
+function BroadcastPanel() {
+  const send = useServerFn(sendPushNotification);
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+  const [url, setUrl] = useState("/");
+  const [sending, setSending] = useState(false);
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    setSending(true);
+    try {
+      const r = await send({ data: { title, body, url } });
+      toast.success(`Sent to ${r.sent}/${r.total} devices`);
+      setTitle(""); setBody("");
+    } catch (err: any) {
+      toast.error(err.message || "Failed to send");
+    } finally {
+      setSending(false);
+    }
+  }
+
+  return (
+    <form onSubmit={submit} className="mt-10 space-y-3 rounded-2xl border border-border bg-gradient-card p-6 shadow-soft">
+      <h2 className="font-display text-xl font-semibold">Send push notification</h2>
+      <p className="text-sm text-muted-foreground">Broadcast to all subscribed devices.</p>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <div>
+          <Label>Title</Label>
+          <Input value={title} onChange={(e) => setTitle(e.target.value)} required maxLength={80} />
+        </div>
+        <div>
+          <Label>Link (path)</Label>
+          <Input value={url} onChange={(e) => setUrl(e.target.value)} placeholder="/buy" />
+        </div>
+      </div>
+      <div>
+        <Label>Message</Label>
+        <Textarea value={body} onChange={(e) => setBody(e.target.value)} required maxLength={200} rows={3} />
+      </div>
+      <Button type="submit" className="bg-gradient-hero text-primary-foreground" disabled={sending}>
+        <Send className="mr-2 h-4 w-4" /> {sending ? "Sending…" : "Send broadcast"}
+      </Button>
+    </form>
   );
 }
