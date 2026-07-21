@@ -4,7 +4,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { formatNPR } from "@/lib/format";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Trash2, Home, Shield, Pencil } from "lucide-react";
+import { Plus, Trash2, Home, Shield, Pencil, Heart } from "lucide-react";
+import { PushToggle } from "@/components/push-toggle";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -57,7 +58,8 @@ function Dashboard() {
           <h1 className="font-display text-3xl font-bold">Welcome{profile?.full_name ? `, ${profile.full_name}` : ""}</h1>
           <p className="text-muted-foreground">{user.email}</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
+          <Button asChild variant="outline"><Link to="/favorites"><Heart className="mr-1 h-4 w-4" /> Favorites</Link></Button>
           {isAdmin && (
             <Button asChild variant="outline"><Link to="/admin"><Shield className="mr-1 h-4 w-4" /> Admin</Link></Button>
           )}
@@ -66,6 +68,8 @@ function Dashboard() {
           </Button>
         </div>
       </div>
+
+      <div className="mt-6"><PushToggle /></div>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
         <StatCard label="My listings" value={listings.length} />
