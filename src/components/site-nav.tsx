@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Home, Menu, X, Building2, LogIn, LayoutDashboard } from "lucide-react";
+import { Home, Menu, X, Building2, LogIn, LayoutDashboard, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
@@ -46,6 +46,11 @@ export function SiteNav() {
         <div className="hidden items-center gap-2 md:flex">
           {user ? (
             <>
+              <Button asChild variant="ghost" size="sm">
+                <Link to="/favorites">
+                  <Heart className="mr-1 h-4 w-4" /> Favorites
+                </Link>
+              </Button>
               <Button asChild variant="ghost" size="sm">
                 <Link to="/dashboard">
                   <LayoutDashboard className="mr-1 h-4 w-4" /> Dashboard

@@ -208,13 +208,28 @@ function PropertyDetail() {
                     </p>
                   ) : null}
                 </div>
-                <Button className="mt-6 w-full bg-gradient-hero text-primary-foreground" size="lg" asChild>
-                  {contactPhone ? (
-                    <a href={`tel:${contactPhone}`}>Contact Owner</a>
-                  ) : (
-                    <Link to={user ? "/contact" : "/auth"}>Contact Owner</Link>
-                  )}
-                </Button>
+                <div className="mt-6 grid gap-2 sm:grid-cols-2">
+                  <Button className="w-full bg-gradient-hero text-primary-foreground" size="lg" asChild>
+                    {contactPhone ? (
+                      <a href={`tel:${contactPhone}`}><Phone className="mr-2 h-4 w-4" /> Call</a>
+                    ) : (
+                      <Link to={user ? "/contact" : "/auth"}><Phone className="mr-2 h-4 w-4" /> Call</Link>
+                    )}
+                  </Button>
+                  <Button className="w-full bg-emerald-600 text-white hover:bg-emerald-700" size="lg" asChild>
+                    {contactPhone ? (
+                      <a
+                        href={`https://wa.me/${contactPhone.replace(/[^\d]/g, "")}?text=${encodeURIComponent(`Hi, I'm interested in your listing "${property.title}" on KothaKhoj.`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <MessageCircle className="mr-2 h-4 w-4" /> WhatsApp
+                      </a>
+                    ) : (
+                      <Link to={user ? "/contact" : "/auth"}><MessageCircle className="mr-2 h-4 w-4" /> WhatsApp</Link>
+                    )}
+                  </Button>
+                </div>
               </>
             ) : (
               <div className="mt-6 border-t pt-4">
