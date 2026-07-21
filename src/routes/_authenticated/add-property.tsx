@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { NEPAL_CITIES, NEPAL_DISTRICTS, PROPERTY_TYPES, STATUS_OPTIONS } from "@/lib/format";
+import { ImageUploader } from "@/components/image-uploader";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/add-property")({
@@ -18,6 +19,7 @@ function AddProperty() {
   const { user } = Route.useRouteContext();
   const navigate = useNavigate();
   const [saving, setSaving] = useState(false);
+  const [images, setImages] = useState<string[]>([]);
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -30,7 +32,6 @@ function AddProperty() {
     city: "Kathmandu",
     district: "Kathmandu",
     address: "",
-    image_url: "",
     contact_name: "",
     contact_phone: "",
     status: "active",
@@ -56,7 +57,8 @@ function AddProperty() {
       city: form.city,
       district: form.district,
       address: form.address || null,
-      image_url: form.image_url || null,
+      image_url: images[0] || null,
+      images: images as any,
       contact_name: form.contact_name || null,
       contact_phone: form.contact_phone || null,
       status: form.status as any,
@@ -152,9 +154,10 @@ function AddProperty() {
         </div>
 
         <div>
-          <Label>Image URL</Label>
-          <Input value={form.image_url} onChange={(e) => set("image_url", e.target.value)} placeholder="https://…" />
-          {form.image_url && <img src={form.image_url} alt="preview" className="mt-2 h-40 w-full rounded-lg object-cover" />}
+          <Label>Photos</Label>
+          <div className="mt-2">
+            <ImageUploader userId={user.id} value={images} onChange={setImages} />
+          </div>
         </div>
 
         <div>
