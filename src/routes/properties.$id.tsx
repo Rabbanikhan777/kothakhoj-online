@@ -134,7 +134,7 @@ function PropertyDetail() {
               <div className="grid aspect-[16/10] place-items-center text-muted-foreground">No image</div>
             )}
             <div className="absolute right-3 top-3">
-              <FavoriteButton propertyId={property.id} />
+              <FavoriteButton propertyId={property.id as string} />
             </div>
           </div>
           {gallery.length > 1 && (
