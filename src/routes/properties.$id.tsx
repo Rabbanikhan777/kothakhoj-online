@@ -1,11 +1,13 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { formatNPR, statusLabel, statusBadgeClass, isAvailable } from "@/lib/format";
-import { Bed, Bath, MapPin, Maximize2, Phone, User, ArrowLeft, Building2, Pencil } from "lucide-react";
+import { Bed, Bath, MapPin, Maximize2, Phone, User, ArrowLeft, Building2, Pencil, MessageCircle, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { FavoriteButton } from "@/components/favorite-button";
 
 export const Route = createFileRoute("/properties/$id")({
   loader: async ({ params }) => {
@@ -107,9 +109,15 @@ function PropertyDetail() {
   const canEdit = !!user && !!property && (property.owner_id === user.id || roles.some((r) => r.role === "admin"));
   const contactName = contact?.contact_name ?? null;
   const contactPhone = contact?.contact_phone ?? null;
+  const gallery: string[] = property && Array.isArray((property as any).images) && (property as any).images.length
+    ? (property as any).images
+    : property?.image_url ? [property.image_url] : [];
+  const [activeIdx, setActiveIdx] = useState(0);
 
   if (isLoading) return <div className="mx-auto max-w-7xl px-4 py-20 text-center text-muted-foreground">Loading…</div>;
   if (error || !property) return <div className="mx-auto max-w-7xl px-4 py-20 text-center">Property not found.</div>;
+
+  const active = gallery[activeIdx] ?? null;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
@@ -119,13 +127,30 @@ function PropertyDetail() {
 
       <div className="grid gap-8 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <div className="overflow-hidden rounded-2xl bg-muted shadow-elegant">
-            {property.image_url ? (
-              <img src={property.image_url} alt={property.title ?? "Property"} className="aspect-[16/10] w-full object-cover" />
+          <div className="relative overflow-hidden rounded-2xl bg-muted shadow-elegant">
+            {active ? (
+              <img src={active} alt={property.title ?? "Property"} className="aspect-[16/10] w-full object-cover" />
             ) : (
               <div className="grid aspect-[16/10] place-items-center text-muted-foreground">No image</div>
             )}
+            <div className="absolute right-3 top-3">
+              <FavoriteButton propertyId={property.id} />
+            </div>
           </div>
+          {gallery.length > 1 && (
+            <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
+              {gallery.map((src, i) => (
+                <button
+                  key={src + i}
+                  type="button"
+                  onClick={() => setActiveIdx(i)}
+                  className={`h-20 w-28 flex-shrink-0 overflow-hidden rounded-lg border-2 transition ${i === activeIdx ? "border-primary" : "border-transparent opacity-70 hover:opacity-100"}`}
+                >
+                  <img src={src} alt="" className="h-full w-full object-cover" />
+                </button>
+              ))}
+            </div>
+          )}
 
           <div className="mt-6 flex flex-wrap items-center gap-2">
             <Badge className="bg-primary text-primary-foreground capitalize">For {property.listing_type}</Badge>
