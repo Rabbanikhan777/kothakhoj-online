@@ -115,7 +115,15 @@ function AuthPage() {
               <Button className="w-full bg-gradient-hero text-primary-foreground" disabled={loading}>
                 {loading ? "Signing in…" : "Sign in"}
               </Button>
+              <button
+                type="button"
+                onClick={forgotPassword}
+                className="w-full text-center text-xs text-muted-foreground hover:text-primary hover:underline"
+              >
+                Forgot your password?
+              </button>
             </form>
+
           </TabsContent>
 
           <TabsContent value="signup">
