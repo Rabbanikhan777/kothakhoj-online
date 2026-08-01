@@ -56,7 +56,7 @@ function AuthPage() {
       email: String(fd.get("email")),
       password: String(fd.get("password")),
       options: {
-        emailRedirectTo: window.location.origin,
+        emailRedirectTo: authRedirectTo("/dashboard"),
         data: { full_name: String(fd.get("full_name") || "") },
       },
     });
@@ -66,11 +66,22 @@ function AuthPage() {
     navigate({ to: "/dashboard" });
   }
 
+  async function forgotPassword() {
+    const email = window.prompt("Enter your account email to receive a reset link:");
+    if (!email) return;
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: authRedirectTo("/reset-password"),
+    });
+    if (error) return toast.error(error.message);
+    toast.success("Password reset link sent. Check your inbox.");
+  }
+
   async function google() {
-    const res = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin });
+    const res = await lovable.auth.signInWithOAuth("google", { redirect_uri: authOrigin() });
     if (res.error) toast.error(res.error.message ?? "Google sign in failed");
     if (!res.redirected && !res.error) navigate({ to: "/dashboard" });
   }
+
 
   return (
     <div className="mx-auto grid min-h-[calc(100vh-8rem)] max-w-md items-center px-4 py-10">
