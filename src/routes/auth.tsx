@@ -54,7 +54,7 @@ function AuthPage() {
     e.preventDefault();
     setLoading(true);
     const fd = new FormData(e.currentTarget);
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email: String(fd.get("email")),
       password: String(fd.get("password")),
       options: {
@@ -64,8 +64,13 @@ function AuthPage() {
     });
     setLoading(false);
     if (error) return toast.error(error.message);
-    toast.success("Account created! Check your email if verification is enabled.");
+    if (!data.session) {
+      setTab("signin");
+      return toast.success("Account created! Confirm your email, then sign in.");
+    }
+    toast.success("Account created!");
     navigate({ to: "/dashboard" });
+
   }
 
   async function forgotPassword() {
