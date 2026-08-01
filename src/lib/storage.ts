@@ -53,8 +53,11 @@ export async function uploadPropertyImages(files: File[], userId: string): Promi
     if (error) {
       throw new Error(error.message || "Could not upload image. Please try again.");
     }
-    const { data } = supabase.storage.from(BUCKET).getPublicUrl(path);
-    urls.push(data.publicUrl);
-  }
+    const { data, error: signErr } = await supabase.storage
+      .from(BUCKET)
+      .createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
+    if (signErr) throw new Error(signErr.message || "Could not generate image link.");
+    urls.push(data.signedUrl);
+
   return urls;
 }
