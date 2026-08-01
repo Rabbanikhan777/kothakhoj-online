@@ -58,6 +58,8 @@ export async function uploadPropertyImages(files: File[], userId: string): Promi
       .createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
     if (signErr) throw new Error(signErr.message || "Could not generate image link.");
     urls.push(data.signedUrl);
+  }
+
 
   return urls;
 }
