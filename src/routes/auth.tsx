@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
-import { authOrigin, authRedirectTo } from "@/lib/auth-redirect";
+import { authRedirectTo } from "@/lib/auth-redirect";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,24 +30,36 @@ function AuthPage() {
   const [tab, setTab] = useState<string>(search.mode === "signup" ? "signup" : "signin");
   const [loading, setLoading] = useState(false);
 
+  // If a session already exists (incl. right after an OAuth round-trip), go to dashboard.
   useEffect(() => {
+    let active = true;
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/dashboard" });
+      if (active && data.session) navigate({ to: "/dashboard", replace: true });
     });
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session && (event === "SIGNED_IN" || event === "INITIAL_SESSION")) {
+        navigate({ to: "/dashboard", replace: true });
+      }
+    });
+    return () => {
+      active = false;
+      sub.subscription.unsubscribe();
+    };
   }, [navigate]);
 
   async function signIn(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
     const fd = new FormData(e.currentTarget);
-    const { error } = await supabase.auth.signInWithPassword({
-      email: String(fd.get("email")),
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: String(fd.get("email")).trim(),
       password: String(fd.get("password")),
     });
     setLoading(false);
     if (error) return toast.error(error.message);
+    if (!data.session) return toast.error("Could not start a session. Please try again.");
     toast.success("Welcome back!");
-    navigate({ to: "/dashboard" });
+    navigate({ to: "/dashboard", replace: true });
   }
 
   async function signUp(e: React.FormEvent<HTMLFormElement>) {
@@ -55,10 +67,10 @@ function AuthPage() {
     setLoading(true);
     const fd = new FormData(e.currentTarget);
     const { data, error } = await supabase.auth.signUp({
-      email: String(fd.get("email")),
+      email: String(fd.get("email")).trim(),
       password: String(fd.get("password")),
       options: {
-        emailRedirectTo: authRedirectTo("/dashboard"),
+        emailRedirectTo: authRedirectTo("/auth"),
         data: { full_name: String(fd.get("full_name") || "") },
       },
     });
@@ -69,14 +81,13 @@ function AuthPage() {
       return toast.success("Account created! Confirm your email, then sign in.");
     }
     toast.success("Account created!");
-    navigate({ to: "/dashboard" });
-
+    navigate({ to: "/dashboard", replace: true });
   }
 
   async function forgotPassword() {
     const email = window.prompt("Enter your account email to receive a reset link:");
     if (!email) return;
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
       redirectTo: authRedirectTo("/reset-password"),
     });
     if (error) return toast.error(error.message);
@@ -84,10 +95,14 @@ function AuthPage() {
   }
 
   async function google() {
-    const res = await lovable.auth.signInWithOAuth("google", { redirect_uri: authOrigin() });
-    if (res.error) toast.error(res.error.message ?? "Google sign in failed");
-    if (!res.redirected && !res.error) navigate({ to: "/dashboard" });
+    const res = await lovable.auth.signInWithOAuth("google", {
+      redirect_uri: authRedirectTo("/auth"),
+    });
+    if (res.error) return toast.error(res.error.message ?? "Google sign in failed");
+    if (res.redirected) return;
+    navigate({ to: "/dashboard", replace: true });
   }
+
 
 
   return (
