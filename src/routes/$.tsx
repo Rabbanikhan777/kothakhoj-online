@@ -1,8 +1,32 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/$")({
-  beforeLoad: () => {
-    throw redirect({ to: "/" });
-  },
-  component: () => null,
+  head: () => ({
+    meta: [
+      { title: "Page Not Found — KothaKhoj.com" },
+      { name: "description", content: "The page you were looking for is not available on KothaKhoj." },
+      { name: "robots", content: "noindex" },
+    ],
+  }),
+  component: NotFound,
 });
+
+function NotFound() {
+  return (
+    <div className="flex min-h-[60vh] items-center justify-center px-4">
+      <div className="max-w-md text-center">
+        <h1 className="text-7xl font-bold text-primary">404</h1>
+        <h2 className="mt-4 text-xl font-semibold">Page not found</h2>
+        <p className="mt-2 text-sm text-muted-foreground">
+          The page you're looking for doesn't exist or was moved.
+        </p>
+        <Link
+          to="/"
+          className="mt-6 inline-flex rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+        >
+          Go home
+        </Link>
+      </div>
+    </div>
+  );
+}

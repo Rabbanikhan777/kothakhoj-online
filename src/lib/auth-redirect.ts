@@ -1,19 +1,13 @@
-const PRODUCTION_ORIGIN = "https://kothakhoj.com";
+const FALLBACK_ORIGIN = "https://kothakhoj.com";
 
 /**
  * Origin used for Supabase auth redirects.
- * Uses the production domain in production, and the current origin
- * in local dev / Lovable previews so redirects never break.
+ * Always the current origin in the browser so links work on preview,
+ * lovable.app, and custom domains alike (no cross-domain bounces).
  */
 export function authOrigin(): string {
-  if (typeof window === "undefined") return PRODUCTION_ORIGIN;
-  const host = window.location.hostname;
-  const isPreview =
-    host === "localhost" ||
-    host === "127.0.0.1" ||
-    host.endsWith(".lovable.app") ||
-    host.endsWith(".lovableproject.com");
-  return isPreview ? window.location.origin : PRODUCTION_ORIGIN;
+  if (typeof window === "undefined") return FALLBACK_ORIGIN;
+  return window.location.origin;
 }
 
 export function authRedirectTo(path = "/"): string {
