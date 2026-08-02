@@ -138,12 +138,31 @@ function RootComponent() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (!("serviceWorker" in navigator)) return;
-    // Guard: skip Lovable preview and dev
     const host = window.location.hostname;
-    if (host.startsWith("id-preview--") || host.startsWith("preview--")) return;
-    if (host === "lovableproject.com" || host.endsWith(".lovableproject.com")) return;
+    const isPreview =
+      host.startsWith("id-preview--") ||
+      host.startsWith("preview--") ||
+      host === "lovableproject.com" ||
+      host.endsWith(".lovableproject.com") ||
+      host === "lovableproject-dev.com" ||
+      host.endsWith(".lovableproject-dev.com") ||
+      host === "beta.lovable.dev" ||
+      host.endsWith(".beta.lovable.dev");
+    const killSwitch = new URLSearchParams(window.location.search).has("sw=off")
+      || window.location.search.includes("sw=off");
+    const inIframe = window.self !== window.top;
+    if (isPreview || inIframe || killSwitch || !import.meta.env.PROD) {
+      navigator.serviceWorker
+        .getRegistrations()
+        .then((regs) => regs.forEach((r) => {
+          if (r.active?.scriptURL.endsWith("/sw.js")) r.unregister();
+        }))
+        .catch(() => {});
+      return;
+    }
     navigator.serviceWorker.register("/sw.js").catch(() => {});
   }, []);
+
 
   useEffect(() => {
     const { data: sub } = supabase.auth.onAuthStateChange((event) => {
