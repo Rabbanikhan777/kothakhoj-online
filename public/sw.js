@@ -1,6 +1,28 @@
 // KothaKhoj push notifications service worker (messaging only — no app-shell cache)
+// Bump SW_VERSION to force waiting workers to activate and purge stale app caches.
+const SW_VERSION = "v3-2026-08-03";
+
 self.addEventListener("install", () => self.skipWaiting());
-self.addEventListener("activate", (event) => event.waitUntil(self.clients.claim()));
+
+self.addEventListener("activate", (event) =>
+  event.waitUntil(
+    (async () => {
+      // This worker never caches anything; delete any app-shell caches left behind
+      // by older builds so installed clients always get the latest HTML/JS.
+      try {
+        const names = await caches.keys();
+        const stale = names.filter((n) =>
+          /(^|-)precache-v\d+-|(^|-)runtime-|^workbox-|^kothakhoj-/.test(n),
+        );
+        await Promise.allSettled(stale.map((n) => caches.delete(n)));
+      } catch (_e) {
+        /* cache API unavailable — nothing to clean */
+      }
+      await self.clients.claim();
+      console.log("KothaKhoj SW active", SW_VERSION);
+    })(),
+  ),
+);
 
 self.addEventListener("push", (event) => {
   let payload = { title: "KothaKhoj", body: "You have a new update.", url: "/" };
