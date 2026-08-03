@@ -148,8 +148,7 @@ function RootComponent() {
       host.endsWith(".lovableproject-dev.com") ||
       host === "beta.lovable.dev" ||
       host.endsWith(".beta.lovable.dev");
-    const killSwitch = new URLSearchParams(window.location.search).has("sw=off")
-      || window.location.search.includes("sw=off");
+    const killSwitch = new URLSearchParams(window.location.search).get("sw") === "off";
     const inIframe = window.self !== window.top;
     if (isPreview || inIframe || killSwitch || !import.meta.env.PROD) {
       navigator.serviceWorker
@@ -160,7 +159,14 @@ function RootComponent() {
         .catch(() => {});
       return;
     }
-    navigator.serviceWorker.register("/sw.js").catch(() => {});
+    navigator.serviceWorker
+      .register("/sw.js", { updateViaCache: "none" })
+      .then((reg) => {
+        // Installed PWAs can hold an old worker for days; force an update check
+        // on every launch so clients always run the newest build.
+        reg.update().catch(() => {});
+      })
+      .catch(() => {});
   }, []);
 
 
